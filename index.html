@@ -1,1 +1,39 @@
 # MDLHZ14github.io
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poisson Probability Calculator</title>
+</head>
+<body>
+    <script type="text/javascript">
+        // Import the math module to use mathematical functions
+        document.write("<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.0.2/math.min.js'><\/script>");
+        
+        // Define a function to calculate the Poisson probability for k successes
+        function poisson_probability(k, l) {
+            // Calculates e raised to the power of -l
+            var exp_term = math.exp(-l);
+            // Calculates l raised to the power of k
+            var power_term = math.pow(l, k);
+            // Calculates the factorial of k
+            var factorial_term = math.factorial(k);
+            // Calculates the Poisson probability P(k successes)
+            var probability = (exp_term * power_term) / factorial_term;
+            return probability;
+        }
+        
+        // Prompt the user to enter the average number of successes per trial (l > 0)
+        var l = parseFloat(prompt("Enter the average number of successes per trial (l > 0): "));
+        // Prompt the user to enter the number of successes (k >= 0)
+        var k = parseInt(prompt("Enter the number of successes (k >= 0): "));
+        
+        // Call the poisson_probability function to calculate the probability
+        var probability = poisson_probability(k, l);
+        
+        // Display the Poisson probability for k successes with 4 decimal places
+        document.write("<p>P(" + k + " successes) = " + probability.toFixed(4) + "</p>");
+    </script>
+</body>
+</html>
