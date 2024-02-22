@@ -1,0 +1,54 @@
+import math
+
+def binomial_coefficient(n, k):
+    """
+    Calcula el coeficiente binomial (n choose k) utilizando la función comb() de la biblioteca math.
+
+    Args:
+        n (int): El número total de ensayos.
+        k (int): El número de éxitos deseados.
+
+    Returns:
+        int: El coeficiente binomial (n choose k).
+    """
+    # Verifica si k es mayor que n, en cuyo caso no hay combinaciones posibles. Esto provocara que la calculadora devuelva 0 porque dicho caso no se puede realizar.
+    if k > n:
+        return 0
+    # Si k es 0 o k es igual a n, el coeficiente binomial es 1 poruqe la probabilidad seria del 100%.
+    if k == 0 or k == n:
+        return 1
+    # Calcula el coeficiente binomial utilizando la función comb() de la biblioteca math.
+    return math.comb(n, k)
+
+def binomial_expansion(p, n):
+    """
+    Calcula la expansión binomial para un número dado de ensayos y una probabilidad de éxito.
+
+    Args:
+        p (float): La probabilidad de éxito de un solo ensayo.
+        n (int): El número total de ensayos.
+
+    Returns:
+        list: Una lista que contiene las probabilidades de cada número de éxitos, desde 0 hasta n.
+    """
+    # Inicializa una lista para almacenar las probabilidades de cada número de éxitos.
+    probabilities = []
+    # Itera sobre todos los posibles números de éxitos (k) desde 0 hasta n. Se for k in  range dentro de parentesis no incluye el "+ 1" entonces la misma probabilidad de la variable n.
+    for k in range(n + 1):
+        # Calcula la probabilidad de obtener k éxitos utilizando la fórmula de la expansión binomial.
+        probability = binomial_coefficient(n, k) * (p ** k) * ((1 - p) ** (n - k))
+        # Agrega la probabilidad calculada a la lista de probabilidades. La funcion de esto es para que el resultado del codigo se de en un listado con todas las probabilidades posibles del caso
+        probabilities.append(probability)
+    # Devuelve la lista de probabilidades.
+    return probabilities
+
+# Solicita al usuario la probabilidad de éxito y el número de ensayos.
+p = float(input("Ingrese la probabilidad de éxito (0 <= p <= 1): "))
+n = int(input("Ingrese el número de ensayos (n >= 0): "))
+
+# Calcula la expansión binomial utilizando la función binomial_expansion(). Aqui la calculadora igual probabilidades a expansion binomial para que con la definicion de exapnsion binomial esta despues de el resultado dependiendo de las variables proporcionadas "p" y "n"
+probabilities = binomial_expansion(p, n)
+
+# Imprime las probabilidades de cada número de éxitos ussando "probabilities", desde 0 hasta n con decimales redondeados a 4 lugares.
+for k in range(n + 1):
+    print(f"P({k} éxitos) = {probabilities[k]:.4f}")
