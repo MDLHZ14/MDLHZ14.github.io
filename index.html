@@ -19,6 +19,8 @@
         <label for="input2">Valor de λ (tasa media de ocurrencia):</label>
         <input type="number" id="input2" name="input2"><br><br>
         <button onclick="calcular()">Calcular</button>
+
+        <div id="respuesta"></div>
     </div>
 
     <script type="text/javascript">
@@ -33,20 +35,58 @@
             var input2 = parseFloat(document.getElementById("input2").value);
 
             if (calculadora === "poisson") {
-                calcularPoisson(input1, input2);
+                var resultado = calcularPoisson(input1, input2);
+                mostrarResultado(resultado);
             } else if (calculadora === "binomial") {
-                calcularBinomial(input1, input2);
+                var resultado = calcularBinomial(input1, input2);
+                mostrarResultado(resultado);
             }
         }
 
         function calcularPoisson(k, l) {
             // Lógica para calcular la probabilidad de Poisson
-            // ...
+            var exp_term = Math.exp(-l);
+            var power_term = Math.pow(l, k);
+            var factorial_term = factorial(k);
+            var probability = (exp_term * power_term) / factorial_term;
+            return probability.toFixed(6);
         }
 
         function calcularBinomial(p, n) {
             // Lógica para calcular la expansión binomial
-            // ...
+            var probabilities = [];
+            for (var k = 0; k <= n; k++) {
+                var probability = binomial_coefficient(n, k) * Math.pow(p, k) * Math.pow((1 - p), (n - k));
+                probabilities.push(probability);
+            }
+            return probabilities;
+        }
+
+        function mostrarResultado(resultado) {
+            var respuestaDiv = document.getElementById("respuesta");
+            respuestaDiv.innerHTML = "<h3>Resultado:</h3><p>" + resultado + "</p>";
+        }
+
+        // Función para calcular factorial
+        function factorial(n) {
+            if (n === 0 || n === 1) {
+                return 1;
+            }
+            for (var i = n - 1; i >= 1; i--) {
+                n *= i;
+            }
+            return n;
+        }
+
+        // Función para calcular el coeficiente binomial
+        function binomial_coefficient(n, k) {
+            if (k > n) {
+                return 0;
+            }
+            if (k === 0 || k === n) {
+                return 1;
+            }
+            return factorial(n) / (factorial(k) * factorial(n - k));
         }
     </script>
 </body>
