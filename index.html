@@ -7,95 +7,46 @@
 </head>
 <body>
     <h2>Calculadora de Probabilidad de Poisson</h2>
-    <button onclick="mostrarCalculadoraPoisson()">Abrir Calculadora de Poisson</button>
+    <button onclick="mostrarFormulario('poisson')">Abrir Calculadora de Poisson</button>
 
     <h2>Calculadora de Expansión Binomial</h2>
-    <button onclick="mostrarCalculadoraBinomial()">Abrir Calculadora de Binomial</button>
+    <button onclick="mostrarFormulario('binomial')">Abrir Calculadora de Binomial</button>
+
+    <div id="formulario" style="display: none;">
+        <h3>Ingrese los datos:</h3>
+        <label for="input1">Valor de k (número de eventos):</label>
+        <input type="number" id="input1" name="input1"><br><br>
+        <label for="input2">Valor de λ (tasa media de ocurrencia):</label>
+        <input type="number" id="input2" name="input2"><br><br>
+        <button onclick="calcular()">Calcular</button>
+    </div>
 
     <script type="text/javascript">
-        function mostrarCalculadoraPoisson() {
-            // Lógica para mostrar la calculadora de Poisson
-            // Importar el módulo math de Python
-            document.write("<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.0.2/math.min.js'><\/script>");
-
-            // Definir la función calcular_poisson para calcular la probabilidad de Poisson P(k) dados k y lambda (l)
-            function calcular_poisson(k, l) {
-                // Calcular e^(-l)
-                var exp_term = math.exp(-l);
-                // Calcular l^k
-                var power_term = math.pow(l, k);
-                // Calcular k factorial
-                var factorial_term = math.factorial(k);
-                // Calcular la probabilidad de Poisson
-                var probability = (exp_term * power_term) / factorial_term;
-                return probability;
-            }
-
-            // Definir la función principal main
-            function main() {
-                try {
-                    // Solicitar al usuario el valor de k y lambda (l)
-                    var k = parseInt(prompt("Ingrese el valor de k (número de eventos): "));
-                    var l = parseFloat(prompt("Ingrese el valor de lambda (tasa media de ocurrencia): "));
-
-                    // Calcular la probabilidad de Poisson
-                    var probabilidad = calcular_poisson(k, l);
-
-                    // Mostrar el resultado
-                    document.write("<p>La probabilidad de P(k=" + k + ") con lambda (λ) = " + l + " es: " + probabilidad.toFixed(6) + "</p>");
-                } catch (error) {
-                    // Si se produce un error, mostrar un mensaje de error
-                    document.write("<p>Por favor, ingrese un valor numérico válido para k y lambda.</p>");
-                }
-            }
-
-            // Llamar a la función main
-            main();
+        function mostrarFormulario(calculadora) {
+            document.getElementById("formulario").style.display = "block";
+            document.getElementById("formulario").setAttribute("data-calculadora", calculadora);
         }
 
-        function mostrarCalculadoraBinomial() {
-            // Lógica para mostrar la calculadora de Binomial
-            // Definir la función binomial_coefficient para calcular el coeficiente binomial (n choose k)
-            function binomial_coefficient(n, k) {
-                // Verifica si k es mayor que n, en cuyo caso no hay combinaciones posibles. Devuelve 0.
-                if (k > n) {
-                    return 0;
-                }
-                // Si k es 0 o k es igual a n, el coeficiente binomial es 1.
-                if (k === 0 || k === n) {
-                    return 1;
-                }
-                // Calcula el coeficiente binomial utilizando la función comb() de la biblioteca math.
-                return math.comb(n, k);
+        function calcular() {
+            var calculadora = document.getElementById("formulario").getAttribute("data-calculadora");
+            var input1 = parseFloat(document.getElementById("input1").value);
+            var input2 = parseFloat(document.getElementById("input2").value);
+
+            if (calculadora === "poisson") {
+                calcularPoisson(input1, input2);
+            } else if (calculadora === "binomial") {
+                calcularBinomial(input1, input2);
             }
+        }
 
-            // Definir la función binomial_expansion para calcular la expansión binomial
-            function binomial_expansion(p, n) {
-                // Inicializa una lista para almacenar las probabilidades de cada número de éxitos.
-                var probabilities = [];
-                // Itera sobre todos los posibles números de éxitos (k) desde 0 hasta n.
-                for (var k = 0; k <= n; k++) {
-                    // Calcula la probabilidad de obtener k éxitos utilizando la fórmula de la expansión binomial.
-                    var probability = binomial_coefficient(n, k) * Math.pow(p, k) * Math.pow((1 - p), (n - k));
-                    // Agrega la probabilidad calculada a la lista de probabilidades.
-                    probabilities.push(probability);
-                }
-                // Devuelve la lista de probabilidades.
-                return probabilities;
-            }
+        function calcularPoisson(k, l) {
+            // Lógica para calcular la probabilidad de Poisson
+            // ...
+        }
 
-            // Solicita al usuario la probabilidad de éxito y el número de ensayos.
-            var p = parseFloat(prompt("Ingrese la probabilidad de éxito (0 <= p <= 1): "));
-            var n = parseInt(prompt("Ingrese el número de ensayos (n >= 0): "));
-
-            // Calcula la expansión binomial utilizando la función binomial_expansion().
-            var probabilities = binomial_expansion(p, n);
-
-            // Imprime las probabilidades de cada número de éxitos desde 0 hasta n.
-            document.write("<p>Probabilidades:</p>");
-            for (var k = 0; k <= n; k++) {
-                document.write("<p>P(" + k + " éxitos) = " + probabilities[k].toFixed(4) + "</p>");
-            }
+        function calcularBinomial(p, n) {
+            // Lógica para calcular la expansión binomial
+            // ...
         }
     </script>
 </body>
