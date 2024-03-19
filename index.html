@@ -1,39 +1,102 @@
-# MDLHZ14github.io
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poisson Probability Calculator</title>
+    <title>Calculadoras</title>
 </head>
 <body>
+    <h2>Calculadora de Probabilidad de Poisson</h2>
+    <button onclick="mostrarCalculadoraPoisson()">Abrir Calculadora de Poisson</button>
+
+    <h2>Calculadora de Expansión Binomial</h2>
+    <button onclick="mostrarCalculadoraBinomial()">Abrir Calculadora de Binomial</button>
+
     <script type="text/javascript">
-        // Import the math module to use mathematical functions
-        document.write("<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.0.2/math.min.js'><\/script>");
-        
-        // Define a function to calculate the Poisson probability for k successes
-        function poisson_probability(k, l) {
-            // Calculates e raised to the power of -l
-            var exp_term = math.exp(-l);
-            // Calculates l raised to the power of k
-            var power_term = math.pow(l, k);
-            // Calculates the factorial of k
-            var factorial_term = math.factorial(k);
-            // Calculates the Poisson probability P(k successes)
-            var probability = (exp_term * power_term) / factorial_term;
-            return probability;
+        function mostrarCalculadoraPoisson() {
+            // Lógica para mostrar la calculadora de Poisson
+            // Importar el módulo math de Python
+            document.write("<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.0.2/math.min.js'><\/script>");
+
+            // Definir la función calcular_poisson para calcular la probabilidad de Poisson P(k) dados k y lambda (l)
+            function calcular_poisson(k, l) {
+                // Calcular e^(-l)
+                var exp_term = math.exp(-l);
+                // Calcular l^k
+                var power_term = math.pow(l, k);
+                // Calcular k factorial
+                var factorial_term = math.factorial(k);
+                // Calcular la probabilidad de Poisson
+                var probability = (exp_term * power_term) / factorial_term;
+                return probability;
+            }
+
+            // Definir la función principal main
+            function main() {
+                try {
+                    // Solicitar al usuario el valor de k y lambda (l)
+                    var k = parseInt(prompt("Ingrese el valor de k (número de eventos): "));
+                    var l = parseFloat(prompt("Ingrese el valor de lambda (tasa media de ocurrencia): "));
+
+                    // Calcular la probabilidad de Poisson
+                    var probabilidad = calcular_poisson(k, l);
+
+                    // Mostrar el resultado
+                    document.write("<p>La probabilidad de P(k=" + k + ") con lambda (λ) = " + l + " es: " + probabilidad.toFixed(6) + "</p>");
+                } catch (error) {
+                    // Si se produce un error, mostrar un mensaje de error
+                    document.write("<p>Por favor, ingrese un valor numérico válido para k y lambda.</p>");
+                }
+            }
+
+            // Llamar a la función main
+            main();
         }
-        
-        // Prompt the user to enter the average number of successes per trial (l > 0)
-        var l = parseFloat(prompt("Enter the average number of successes per trial (l > 0): "));
-        // Prompt the user to enter the number of successes (k >= 0)
-        var k = parseInt(prompt("Enter the number of successes (k >= 0): "));
-        
-        // Call the poisson_probability function to calculate the probability
-        var probability = poisson_probability(k, l);
-        
-        // Display the Poisson probability for k successes with 4 decimal places
-        document.write("<p>P(" + k + " successes) = " + probability.toFixed(4) + "</p>");
+
+        function mostrarCalculadoraBinomial() {
+            // Lógica para mostrar la calculadora de Binomial
+            // Definir la función binomial_coefficient para calcular el coeficiente binomial (n choose k)
+            function binomial_coefficient(n, k) {
+                // Verifica si k es mayor que n, en cuyo caso no hay combinaciones posibles. Devuelve 0.
+                if (k > n) {
+                    return 0;
+                }
+                // Si k es 0 o k es igual a n, el coeficiente binomial es 1.
+                if (k === 0 || k === n) {
+                    return 1;
+                }
+                // Calcula el coeficiente binomial utilizando la función comb() de la biblioteca math.
+                return math.comb(n, k);
+            }
+
+            // Definir la función binomial_expansion para calcular la expansión binomial
+            function binomial_expansion(p, n) {
+                // Inicializa una lista para almacenar las probabilidades de cada número de éxitos.
+                var probabilities = [];
+                // Itera sobre todos los posibles números de éxitos (k) desde 0 hasta n.
+                for (var k = 0; k <= n; k++) {
+                    // Calcula la probabilidad de obtener k éxitos utilizando la fórmula de la expansión binomial.
+                    var probability = binomial_coefficient(n, k) * Math.pow(p, k) * Math.pow((1 - p), (n - k));
+                    // Agrega la probabilidad calculada a la lista de probabilidades.
+                    probabilities.push(probability);
+                }
+                // Devuelve la lista de probabilidades.
+                return probabilities;
+            }
+
+            // Solicita al usuario la probabilidad de éxito y el número de ensayos.
+            var p = parseFloat(prompt("Ingrese la probabilidad de éxito (0 <= p <= 1): "));
+            var n = parseInt(prompt("Ingrese el número de ensayos (n >= 0): "));
+
+            // Calcula la expansión binomial utilizando la función binomial_expansion().
+            var probabilities = binomial_expansion(p, n);
+
+            // Imprime las probabilidades de cada número de éxitos desde 0 hasta n.
+            document.write("<p>Probabilidades:</p>");
+            for (var k = 0; k <= n; k++) {
+                document.write("<p>P(" + k + " éxitos) = " + probabilities[k].toFixed(4) + "</p>");
+            }
+        }
     </script>
 </body>
 </html>
